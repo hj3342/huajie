@@ -1,0 +1,5 @@
+
+SpringMVC在handler方法上可以通过Map、Model和ModelMap三个参数绑定传入到前端的参数，Map、Model和ModelMap运行时的具体类型都是BindingAwareModelMap。
+关系：Map(jdk中的接口) 、Model（spring的接口）、ModelMap(class,实现Map接口)，BindingAwareModelMap继承了ExtendedModelMap，ExtendedModelMap继承了ModelMap,实现了Model接口
+
+
