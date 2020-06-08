@@ -1,0 +1,32 @@
+org.springframework.context.support.AbstractApplicationContext#finishBeanFactoryInitialization
+
+
+   org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons//实例化所有立即加载的单例bean
+​        org.springframework.beans.factory.support.AbstractBeanFactory#getBean
+​           org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean
+​				org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton
+​					org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean
+						org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean  //真正创建LagouBean
+							org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory //LagouBean加入三级缓存
+								org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean //LagouBean属性填充
+								
+									org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyPropertyValues  //处理LagouBean属性依赖
+										org.springframework.beans.factory.support.BeanDefinitionValueResolver#resolveValueIfNecessary  //去获取LagouBean的依赖itBean
+											org.springframework.beans.factory.support.BeanDefinitionValueResolver#resolveReference
+												org.springframework.beans.factory.support.AbstractBeanFactory#getBean
+													org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean
+														org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton
+														
+															org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean
+																org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean  //真正创建itBean
+																	org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory //itBean加入三级缓存
+																		org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean //itBean属性填充
+																			org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyPropertyValues  //处理itBean属性依赖
+																				org.springframework.beans.factory.support.BeanDefinitionValueResolver#resolveValueIfNecessary  //去获取itBean的依赖LagouBean
+																					org.springframework.beans.factory.support.BeanDefinitionValueResolver#resolveReference
+																						org.springframework.beans.factory.support.AbstractBeanFactory#getBean
+																							org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean
+																								org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton  //从三级缓存中获取LagouBean，并将LagouBean放入二级缓存
+														  
+														 org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingleton  //将itBean放入一级缓存
+								  org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#initializeBean //lagouBean从一级缓存中获取itBean

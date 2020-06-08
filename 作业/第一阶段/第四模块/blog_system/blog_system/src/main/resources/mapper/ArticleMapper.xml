@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lagou.blog_system.mapper.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.lagou.blog_system.pojo.Article" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="DATE" />
+    <result column="modified" property="modified" jdbcType="DATE" />
+    <result column="categories" property="categories" jdbcType="VARCHAR" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="allow_comment" property="allow_comment" jdbcType="BIT" />
+    <result column="thumbnail" property="thumbnail" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.lagou.blog_system.pojo.Article" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, created, modified, categories, tags, allow_comment, thumbnail
+  </sql>
+
+  <select id="queryAll" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    from t_article
+  </select>
+</mapper>
