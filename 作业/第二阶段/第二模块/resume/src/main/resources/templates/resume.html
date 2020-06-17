@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui.js}"></script>
+<link rel="stylesheet" th:href="@{/css/jquery-ui.css}" type="text/css" />
+<head>
+    <script>
+        //新增
+        function create() {
+            $('#my_dialog').dialog({
+                modal : true,
+                width : "400",
+                height : "230"
+            });
+            document.getElementById("my_dialog").style.display = "block";
+
+        };
+
+        //修改
+        function update(id){
+            $('#my_dialog').dialog({
+                modal : true,
+                width : "400",
+                height : "230"
+            });
+            document.getElementById("my_dialog").style.display = "block";
+
+            $.ajax({
+                type:"post",
+                url:"toUpdate",
+                data:{id:id},
+                dataType:"json",
+                success:function(data){
+                    $("#address").val(data.address);
+                    $("#name").val(data.name);
+                    $("#phone").val(data.phone);
+                    $("#id").val(data.id);
+                }
+            })
+
+
+        }
+
+
+        //确认
+        function confirm() {
+            /*debugger;*/
+            var id = $("#id").val();
+            var address = $("#address").val();
+            var name =  $("#name").val();
+            var phone = $("#phone").val();
+            var url ;
+            if(id!=null){
+                url = "update";
+            }else {
+                url = "create";
+            }
+
+            $.ajax({
+                type:"post",
+                url:url,
+                data:{id:id,address:address,name:name,phone:phone},
+                success:function(data){
+                    $('#my_dialog').dialog("close");
+                    window.location.href="queryAll";
+                    alert(data);
+                }
+            })
+        };
+
+        //取消
+        function Cancel() {
+            $('#my_dialog').dialog("close");
+        };
+
+
+        //删除
+        function del(id) {
+            $.ajax({
+                type:"get",
+                url:"delete",
+                data:{id:id},
+                success:function(data){
+                    alert(data);
+                    window.location.href="queryAll";
+                },
+                error:function () {
+                    alert("删除失败！");
+                }
+            })
+        }
+
+    </script>
+</head>
+<body>
+<table border="1px" width="65%" align="center">
+    <tr>
+        <td colspan="6" align="center"><h3>简历表</h3></td>
+    </tr>
+    <tr>
+        <th>编号</th>
+        <th>地址</th>
+        <th>姓名</th>
+        <th>手机号</th>
+        <th><button onclick="create();">新增</button></th>
+    </tr>
+
+        <tr th:if ="${resumeList.size() eq 0}">
+            <td colspan="5">无数据</td>
+        </tr>
+
+        <tr th:each="resume:${resumeList}">
+            <th th:text="${resume.id}"></th>
+            <th th:text="${resume.address}"></th>
+            <th th:text="${resume.name}"></th>
+            <th th:text="${resume.phone}"></th>
+            <th>
+                <button th:onclick="'javascript:update('+${resume.id}+')' ">编辑</button>
+                <button th:onclick="'javascript:del('+${resume.id}+')' ">删除</button>
+            </th>
+        </tr>
+
+</table>
+
+
+<div id="my_dialog" title="简历信息" style="display: none">
+    <form>
+
+        <input type="text" id="id" name="address" hidden/>
+
+        <p>
+            地址：<input type="text" id="address" name="address" />
+        </p>
+        <p>
+            姓名：<input type="text" id="name" name="name"/>
+        </p>
+        <p>
+            手机号：<input type="text" id="phone" name="phone"/>
+        </p>
+        <div style="float: right;">
+            <button class="my-btn-gray" OnClick="Cancel()">取消</button>
+            <button class="my-btn-blue" OnClick="confirm()">确认</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
